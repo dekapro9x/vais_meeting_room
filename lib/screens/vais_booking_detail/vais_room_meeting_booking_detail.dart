@@ -1,4 +1,6 @@
 import 'package:app_base_flutter/models/home/response/room_list_response.dart';
+import 'package:app_base_flutter/screens/vais_booking_room_handle/handle_booking_room.dart';
+import 'package:app_base_flutter/services/navigations_servicces.dart';
 import 'package:flutter/material.dart';
 
 class RoomMeetingBookingDetailScreen extends StatelessWidget {
@@ -11,6 +13,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isAvailable = room.status == "available";
     bool isActive = room.isActive;
+    final NavigationService navigationService = NavigationService();
 
     return Scaffold(
       appBar: AppBar(
@@ -235,16 +238,22 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Center(
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
-                label: const Text('Đặt Lịch'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 12,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Room roomDetail = room;
+                    navigationService.navigate(
+                        context, HandleBookingRoomScreen(room: roomDetail));
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Đặt Lịch'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                    ),
                   ),
                 ),
               ),
