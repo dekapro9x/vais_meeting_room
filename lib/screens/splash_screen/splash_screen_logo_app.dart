@@ -82,18 +82,18 @@ class _SplashScreenLogoAppState extends State<SplashScreenLogoApp>
           CustomPaint(
             size: Size.infinite,
             painter: HolePainter(
-              color: GlobalColors.primaryColor,
+              color: const Color.fromARGB(255, 93, 230, 19),
               holeSize: _animation.holeSize.value * _size.width,
             ),
           ),
           Center(
             child: Container(
-              width: sizeConfigResponsive.getWidthReposive(250),
-              height: sizeConfigResponsive.getWidthReposive(250),
+              width: sizeConfigResponsive.getWidthReposive(300),
+              height: sizeConfigResponsive.getWidthReposive(300),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(
-                  sizeConfigResponsive.getWidthReposive(125),
+                  sizeConfigResponsive.getWidthReposive(80),
                 ),
                 image: const DecorationImage(
                   image: AssetImage(GlobalImages.logoApp),
