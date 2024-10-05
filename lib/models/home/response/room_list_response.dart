@@ -5,7 +5,7 @@ class Room {
   final String openingHours;
   final String closingHours;
   final bool isActive;
-  final String bookedTime;
+  final List<String> bookedTimes;
 
   Room({
     required this.name,
@@ -14,7 +14,7 @@ class Room {
     required this.openingHours,
     required this.closingHours,
     required this.isActive,
-    required this.bookedTime,
+    required this.bookedTimes,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) {
@@ -25,7 +25,7 @@ class Room {
       openingHours: json['openingHours'] as String,
       closingHours: json['closingHours'] as String,
       isActive: json['isActive'] as bool,
-      bookedTime: json['bookedTime'] as String,
+      bookedTimes: List<String>.from(json['bookedTimes'] ?? []),
     );
   }
 
@@ -37,22 +37,7 @@ class Room {
       'openingHours': openingHours,
       'closingHours': closingHours,
       'isActive': isActive,
-      'bookedTime': bookedTime,
+      'bookedTimes': bookedTimes,
     };
-  }
-}
-
-class RoomListResponse {
-  final List<Room> rooms;
-
-  RoomListResponse({required this.rooms});
-
-  factory RoomListResponse.fromJson(List<dynamic> jsonList) {
-    List<Room> roomList = jsonList.map((json) => Room.fromJson(json)).toList();
-    return RoomListResponse(rooms: roomList);
-  }
-
-  List<Map<String, dynamic>> toJson() {
-    return rooms.map((room) => room.toJson()).toList();
   }
 }

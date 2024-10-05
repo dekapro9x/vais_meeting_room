@@ -4,7 +4,8 @@ import 'package:app_base_flutter/common/log_utils.dart';
 import 'package:app_base_flutter/models/home/response/room_list_response.dart';
 
 class ListRoomScreen extends StatefulWidget {
-  const ListRoomScreen({Key? key}) : super(key: key);
+  final bool isBooking;
+  const ListRoomScreen({Key? key, required this.isBooking}) : super(key: key);
   @override
   _ListRoomScreenState createState() => _ListRoomScreenState();
 }
@@ -196,25 +197,46 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
             ),
             const SizedBox(height: 8),
             // Thời gian đặt lịch của phòng
-            Row(
-              children: [
-                const Icon(
-                  Icons.event_note,
-                  color: Colors.deepPurple,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Thời gian đặt lịch: ${room.bookedTime}',
-                    style: const TextStyle(
+            if (room.bookedTimes.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Thời gian đặt lịch:',
+                    style: TextStyle(
                       fontSize: 14,
-                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
                     ),
                   ),
-                ),
-              ],
-            ),
+                  const SizedBox(height: 4),
+                  ...room.bookedTimes.map((time) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.event_note,
+                            color: Colors.deepPurple,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              time,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
           ],
         ),
       ),

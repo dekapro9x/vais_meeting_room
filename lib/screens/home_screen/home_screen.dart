@@ -112,7 +112,8 @@ class HomeScreenState extends State<HomeScreen> {
         logWithColor("Item menu: $title", red);
         switch (index) {
           case 0:
-            navigationService.navigate(context, const ListRoomScreen());
+            navigationService.navigate(
+                context, const ListRoomScreen(isBooking: false));
             break;
           case 1:
             break;
@@ -124,6 +125,8 @@ class HomeScreenState extends State<HomeScreen> {
                 MyCustomEvent(eventMessageBusEmitActiveBottomMenuIndex2));
             break;
           case 3:
+            navigationService.navigate(
+                context, const ListRoomScreen(isBooking: true));
             break;
           default:
             break;
@@ -200,7 +203,17 @@ class HomeScreenState extends State<HomeScreen> {
   Widget renderSpecialMenuItem(
       String title, IconData icon, Color color, int index) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        logWithColor("Item menu: $title", red);
+        switch (index) {
+          case 3:
+            navigationService.navigate(
+                context, const ListRoomScreen(isBooking: true));
+            break;
+          default:
+            break;
+        }
+      },
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),

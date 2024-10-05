@@ -32,7 +32,7 @@ class RouteGenerator {
       //Danh sách phòng họp:
       case listRoomManage:
         return MaterialPageRoute(
-            builder: (context) =>const ListRoomScreen(),
+            builder: (context) => const ListRoomScreen(isBooking: false),
             settings: settings,
             maintainState: false);
       default:

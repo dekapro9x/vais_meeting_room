@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp>
       "openingHours": "07:00 AM",
       "closingHours": "07:00 PM",
       "isActive": false,
-      "bookedTime": "Không có",
+      "bookedTimes": []
     },
     {
       "name": "Phòng Họp B",
@@ -51,16 +51,16 @@ class _MyAppState extends State<MyApp>
       "openingHours": "07:00 AM",
       "closingHours": "07:00 PM",
       "isActive": true,
-      "bookedTime": "10:00 AM - 11:00 AM",
+      "bookedTimes": ["10:00 AM - 11:00 AM"]
     },
     {
       "name": "Phòng Họp C",
       "description": "Sức chứa 15 người",
-      "status": "booked",
+      "status": "available",
       "openingHours": "08:00 AM",
       "closingHours": "05:00 PM",
       "isActive": false,
-      "bookedTime": "13:00 PM - 15:00 PM",
+      "bookedTimes": ["01:00 PM - 02:00 PM", "03:00 PM - 04:00 PM"]
     },
     {
       "name": "Phòng Họp D",
@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp>
       "openingHours": "10:00 AM",
       "closingHours": "04:00 PM",
       "isActive": false,
-      "bookedTime": "02:00 PM - 03:00 PM",
+      "bookedTimes": ["02:00 PM - 03:00 PM"]
     },
     {
       "name": "Phòng Họp E",
@@ -78,8 +78,8 @@ class _MyAppState extends State<MyApp>
       "openingHours": "08:30 AM",
       "closingHours": "06:30 PM",
       "isActive": false,
-      "bookedTime": "Không có",
-    },
+      "bookedTimes": []
+    }
   ];
   @override
   Future<void> afterFirstLayout(BuildContext context) async {}
