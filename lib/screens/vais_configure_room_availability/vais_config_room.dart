@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_base_flutter/common/log_utils.dart';
 
 class VaisConfigRoomAdmin extends StatefulWidget {
   const VaisConfigRoomAdmin({Key? key}) : super(key: key);
@@ -10,13 +11,12 @@ class VaisConfigRoomAdmin extends StatefulWidget {
 class VaisConfigRoomAdminState extends State<VaisConfigRoomAdmin> {
   @override
   void initState() {
+    logWithColor('Admin cấu hình phòng họp', red);
     super.initState();
-    print('Initializing VaisConfigRoomAdmin');
   }
 
   @override
   void dispose() {
-    print('Disposing VaisConfigRoomAdmin');
     super.dispose();
   }
 
