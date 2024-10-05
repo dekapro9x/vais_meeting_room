@@ -1,60 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:app_base_flutter/configs/storages/app_prefs.dart';
+import 'package:app_base_flutter/common/log_utils.dart';
+import 'package:app_base_flutter/models/home/response/room_list_response.dart';
 
 class ListRoomScreen extends StatefulWidget {
   const ListRoomScreen({Key? key}) : super(key: key);
-
   @override
   _ListRoomScreenState createState() => _ListRoomScreenState();
 }
 
 class _ListRoomScreenState extends State<ListRoomScreen> {
-  final List<Map<String, dynamic>> _rooms = [
-    {
-      "name": "Phòng Họp A",
-      "description": "Sức chứa 10 người",
-      "status": "available",
-      "openingHours": "08:00 AM",
-      "closingHours": "06:00 PM",
-      "isActive": true,
-      "bookedTime": "Không có",
-    },
-    {
-      "name": "Phòng Họp B",
-      "description": "Sức chứa 20 người",
-      "status": "booked",
-      "openingHours": "09:00 AM",
-      "closingHours": "05:00 PM",
-      "isActive": true,
-      "bookedTime": "10:00 AM - 11:00 AM",
-    },
-    {
-      "name": "Phòng Họp C",
-      "description": "Sức chứa 15 người",
-      "status": "available",
-      "openingHours": "08:00 AM",
-      "closingHours": "05:00 PM",
-      "isActive": true,
-      "bookedTime": "Không có",
-    },
-    {
-      "name": "Phòng Họp D",
-      "description": "Sức chứa 8 người",
-      "status": "booked",
-      "openingHours": "10:00 AM",
-      "closingHours": "04:00 PM",
-      "isActive": false,
-      "bookedTime": "02:00 PM - 03:00 PM",
-    },
-    {
-      "name": "Phòng Họp E",
-      "description": "Sức chứa 12 người",
-      "status": "available",
-      "openingHours": "08:30 AM",
-      "closingHours": "06:30 PM",
-      "isActive": true,
-      "bookedTime": "Không có",
-    },
-  ];
+  final AppPrefStorage _appPref = AppPrefStorage();
+  List<Room> roomMeetingState = [];
+
+  @override
+  void initState() {
+    getListRoomMeetingManage();
+    super.initState();
+  }
+
+  //Lấy danh sách phòng họp được quản lý:
+  Future<void> getListRoomMeetingManage() async {
+    await _appPref.init();
+    final listRooomChat = await _appPref.getListRoomMeetingManage();
+    logWithColor('Danh sách room chat: $listRooomChat', green);
+    setState(() {
+      roomMeetingState = listRooomChat;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +39,9 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
         ),
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -75,29 +51,36 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
             colors: [Colors.deepPurple.shade200, Colors.blueAccent.shade100],
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: _rooms.length,
-            itemBuilder: (context, index) {
-              return _buildRoomCard(_rooms[index]);
-            },
-          ),
-        ),
+        child: roomMeetingState.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.builder(
+                  itemCount: roomMeetingState.length,
+                  itemBuilder: (context, index) {
+                    return renderBuildRoomCard(roomMeetingState[index]);
+                  },
+                ),
+              )
+            : const Center(
+                child: Text(
+                  'Không có phòng họp nào.',
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+              ),
       ),
     );
   }
 
-  Widget _buildRoomCard(Map<String, dynamic> room) {
-    bool isAvailable = room["status"] == "available";
-    bool isActive = room["isActive"] == true;
+  Widget renderBuildRoomCard(Room room) {
+    bool isAvailable = room.status == "available";
+    bool isActive = room.isActive;
 
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
       elevation: 5,
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -124,7 +107,7 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        room["name"],
+                        room.name,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -133,7 +116,7 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        room["description"],
+                        room.description,
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
@@ -150,6 +133,9 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
               ],
             ),
             const SizedBox(height: 16),
+            Divider(color: Colors.grey[300]),
+            const SizedBox(height: 8),
+            // Thời gian mở cửa và đóng cửa
             Row(
               children: [
                 const Icon(
@@ -158,16 +144,39 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  'Giờ mở cửa: ${room["openingHours"]} - Giờ đóng cửa: ${room["closingHours"]}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
+                Expanded(
+                  child: Text(
+                    'Giờ mở cửa: ${room.openingHours}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(
+                  Icons.access_time,
+                  color: Colors.deepPurple,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Giờ đóng cửa: ${room.closingHours}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            // Trạng thái hoạt động của phòng
             Row(
               children: [
                 Icon(
@@ -186,6 +195,7 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
               ],
             ),
             const SizedBox(height: 8),
+            // Thời gian đặt lịch của phòng
             Row(
               children: [
                 const Icon(
@@ -194,11 +204,13 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  'Thời gian đặt lịch: ${room["bookedTime"]}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
+                Expanded(
+                  child: Text(
+                    'Thời gian đặt lịch: ${room.bookedTime}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
                   ),
                 ),
               ],

@@ -12,6 +12,8 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:app_base_flutter/screens/splash_screen/splash_screen_logo_app.dart';
 import 'package:app_base_flutter/configs/get_it/get_it.dart';
+import 'package:app_base_flutter/configs/storages/app_prefs.dart';
+import 'package:app_base_flutter/models/home/response/room_list_response.dart';
 
 void main() async {
   logWithColor('BeoTranDev...Run main()', green);
@@ -31,16 +33,75 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp>
     with WidgetsBindingObserver, AfterLayoutMixin {
   final List<AppLifecycleState> _stateHistoryList = <AppLifecycleState>[];
+  final AppPrefStorage _appPref = AppPrefStorage();
+  final List<Map<String, dynamic>> roomsMeetingManage = [
+    {
+      "name": "Phòng Họp A",
+      "description": "Sức chứa 10 người",
+      "status": "available",
+      "openingHours": "07:00 AM",
+      "closingHours": "07:00 PM",
+      "isActive": false,
+      "bookedTime": "Không có",
+    },
+    {
+      "name": "Phòng Họp B",
+      "description": "Sức chứa 20 người",
+      "status": "booked",
+      "openingHours": "07:00 AM",
+      "closingHours": "07:00 PM",
+      "isActive": true,
+      "bookedTime": "10:00 AM - 11:00 AM",
+    },
+    {
+      "name": "Phòng Họp C",
+      "description": "Sức chứa 15 người",
+      "status": "booked",
+      "openingHours": "08:00 AM",
+      "closingHours": "05:00 PM",
+      "isActive": false,
+      "bookedTime": "13:00 PM - 15:00 PM",
+    },
+    {
+      "name": "Phòng Họp D",
+      "description": "Sức chứa 8 người",
+      "status": "available",
+      "openingHours": "10:00 AM",
+      "closingHours": "04:00 PM",
+      "isActive": false,
+      "bookedTime": "02:00 PM - 03:00 PM",
+    },
+    {
+      "name": "Phòng Họp E",
+      "description": "Sức chứa 12 người",
+      "status": "available",
+      "openingHours": "08:30 AM",
+      "closingHours": "06:30 PM",
+      "isActive": false,
+      "bookedTime": "Không có",
+    },
+  ];
   @override
   Future<void> afterFirstLayout(BuildContext context) async {}
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    if (WidgetsBinding.instance.lifecycleState != null) {
-      _stateHistoryList.add(WidgetsBinding.instance.lifecycleState!);
+    saveRoomMeetingList();
+    if (WidgetsBinding.instance != null) {
+      WidgetsBinding.instance.addObserver(this);
+      if (WidgetsBinding.instance.lifecycleState != null) {
+        _stateHistoryList.add(WidgetsBinding.instance.lifecycleState!);
+      }
     }
+  }
+
+  Future<void> saveRoomMeetingList() async {
+    await _appPref.init();
+    List<Room> roomsList =
+        roomsMeetingManage.map((roomJson) => Room.fromJson(roomJson)).toList();
+    logWithColor('Danh sách room meeting: $roomsList', red);
+    await _appPref.setListRoomMeetingManage(rooms: roomsList);
   }
 
   bool alreadyAddedOverlays = false;

@@ -8,11 +8,18 @@ class BasePrefsStorage {
     prefs = await SharedPreferences.getInstance();
   }
 
-  T getValueForKey<T>(String key) {
-    return prefs?.get(key) as T;
+  T? getValueForKey<T>(String key) {
+    if (prefs == null) {
+      throw Exception("SharedPreferences chưa được khởi tạo. Hãy gọi init() trước khi sử dụng.");
+    }
+    return prefs!.get(key) as T?;
   }
 
   Future<bool> setValueForKey(String key, dynamic value) {
+    if (prefs == null) {
+      throw Exception("SharedPreferences chưa được khởi tạo. Hãy gọi init() trước khi sử dụng.");
+    }
+
     if (value is int) {
       return prefs!.setInt(key, value);
     }
@@ -38,6 +45,9 @@ class BasePrefsStorage {
   }
 
   Future<void> remove({required String key}) async {
+    if (prefs == null) {
+      throw Exception("SharedPreferences chưa được khởi tạo. Hãy gọi init() trước khi sử dụng.");
+    }
     await prefs!.remove(key);
   }
 }
