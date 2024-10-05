@@ -103,11 +103,13 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
                       width: 60,
                       height: 60,
                       decoration: BoxDecoration(
-                        color: isAvailable ? Colors.green : Colors.red,
+                        color: isActive ? Colors.green : Colors.red,
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Icon(
-                        isAvailable ? Icons.check : Icons.close,
+                        isActive
+                            ? Icons.play_circle_fill
+                            : Icons.do_not_disturb_alt,
                         color: Colors.white,
                         size: 30,
                       ),
