@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int? tabIndex;
@@ -20,7 +21,11 @@ class BottomNavigation extends StatefulWidget {
 
   static MultiBlocProvider providers({int? tabIndex}) {
     return MultiBlocProvider(
-      providers: [],
+      providers: [
+        BlocProvider<HomeCubit>(
+          create: (BuildContext context) => HomeCubit(),
+        ),
+      ],
       child: BottomNavigation(
         tabIndex: tabIndex,
       ),
@@ -36,7 +41,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   bool hasLogged = false;
   int unreadCount = 0;
   int indexTabBottomActive = 0;
-  bool isHideNavigationBar = false;
+  bool isVisibleNavigationMenuBar = true;
 
   @override
   void initState() {
@@ -69,6 +74,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   List<Widget> buildScreen() {
     return [
       const HomeScreen(),
+      const HomeScreen(),
     ];
   }
 
@@ -82,6 +88,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
         activeColorPrimary: GlobalColors.primaryColor,
         inactiveIcon: SvgPicture.asset(
           GlobalImages.home,
+        ),
+      ),
+      PersistentBottomNavBarItem(
+        icon: SvgPicture.asset(
+          GlobalImages.bookingsSelected,
+        ),
+        title: 'Booking'.tr,
+        activeColorPrimary: GlobalColors.primaryColor,
+        inactiveIcon: SvgPicture.asset(
+          GlobalImages.bookings,
         ),
       ),
     ];
@@ -123,7 +139,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         navBarStyle: NavBarStyle.style3,
         resizeToAvoidBottomInset: false,
         stateManagement: true,
-        isVisible: isHideNavigationBar,
+        isVisible: isVisibleNavigationMenuBar,
         animationSettings: const NavBarAnimationSettings(
           navBarItemAnimation: ItemAnimationSettings(),
         ),
