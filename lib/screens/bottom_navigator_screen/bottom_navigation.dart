@@ -4,17 +4,17 @@ import 'package:app_base_flutter/common/log_utils.dart';
 import 'package:app_base_flutter/configs/global_colors.dart';
 import 'package:app_base_flutter/configs/global_images.dart';
 import 'package:app_base_flutter/configs/global_size_responsive_configs.dart';
+import 'package:app_base_flutter/configs/storages/app_prefs.dart';
+import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
 import 'package:app_base_flutter/screens/home_screen/home_screen.dart';
+import 'package:app_base_flutter/screens/vais_configure_room_availability/vais_config_room.dart';
+import 'package:app_base_flutter/screens/vais_list_room_manage/list_room_screen.dart';
+import 'package:app_base_flutter/services/event_bus_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
-import 'package:app_base_flutter/screens/vais_configure_room_availability/vais_config_room.dart';
-import 'package:app_base_flutter/services/event_bus_services.dart';
-import 'package:app_base_flutter/screens/vais_list_room_manage/list_room_screen.dart';
-import 'package:app_base_flutter/configs/storages/app_prefs.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int? tabIndex;
@@ -94,8 +94,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   List<Widget> buildScreen() {
     return [
       HomeScreen(),
-      const VaisConfigRoomAdmin(),
-      const ListRoomScreen(isBooking: true),
+      VaisConfigRoomAdmin(),
+      ListRoomScreen(isBooking: true),
     ];
   }
 

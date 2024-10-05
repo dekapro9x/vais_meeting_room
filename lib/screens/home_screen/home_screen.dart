@@ -375,7 +375,7 @@ class HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 24),
                 renderBuildMenuTop(),
                 const SizedBox(height: 24),
-                // renderBuildMenuBottom()
+                renderBuildMenuBottom()
               ],
             ),
           ),
