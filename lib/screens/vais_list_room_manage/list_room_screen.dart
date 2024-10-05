@@ -38,7 +38,7 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Danh Sách Phòng Họp',
+          'Danh sách phòng họp',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -200,8 +200,8 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
                     const SizedBox(width: 8),
                     Text(
                       isActive
-                          ? 'Phòng đang hoạt động'
-                          : 'Phòng không hoạt động',
+                          ? 'Phòng họp đang hoạt động'
+                          : 'Phòng họp không hoạt động',
                       style: TextStyle(
                         fontSize: 14,
                         color: isActive ? Colors.green : Colors.red,

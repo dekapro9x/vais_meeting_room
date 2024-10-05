@@ -1,6 +1,7 @@
 import 'package:app_base_flutter/common/log_utils.dart';
 import 'package:app_base_flutter/models/home/response/room_list_response.dart';
 import 'package:flutter/material.dart';
+import 'package:app_base_flutter/configs/storages/app_prefs.dart';
 
 class HandleBookingRoomScreen extends StatefulWidget {
   final Room room;
@@ -15,6 +16,7 @@ class HandleBookingRoomScreen extends StatefulWidget {
 class _HandleBookingRoomScreenState extends State<HandleBookingRoomScreen> {
   String? selectedDuration;
   String? selectedTimeSlot;
+  final AppPrefStorage _appPref = AppPrefStorage();
   List<String> availableBookingTimeSlots = [];
   final List<String> durationsTimerSelect = [
     for (int i = 10; i <= 120; i += 10) '$i phút'
@@ -22,6 +24,7 @@ class _HandleBookingRoomScreenState extends State<HandleBookingRoomScreen> {
 
   @override
   void initState() {
+    _appPref.init();
     super.initState();
     generateAvailableSlots();
   }
@@ -65,7 +68,8 @@ class _HandleBookingRoomScreenState extends State<HandleBookingRoomScreen> {
     return '$hour:$minute $period';
   }
 
-  void onPressConfirmBooking() {
+  void onPressConfirmBooking() async {
+    // Kiểm tra xem người dùng đã chọn thời gian và thời lượng hay chưa
     if (selectedTimeSlot == null || selectedDuration == null) {
       showDialog(
         context: context,
@@ -85,27 +89,58 @@ class _HandleBookingRoomScreenState extends State<HandleBookingRoomScreen> {
       );
     } else {
       logWithColor(
-          'Đặt lịch thành công cho phòng ${widget.room.name} vào lúc $selectedTimeSlot trong $selectedDuration',
-          red);
-      // Sau khi đặt lịch thành công, thêm thời gian đã đặt vào bookedTimes => người dùng không thể đặt lại lịch vào thời gian này nữa.
-      setState(() {
-        widget.room.bookedTimes.add(selectedTimeSlot!);
-      });
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Thông báo'),
-            content: const Text('Cuộc họp đã được đặt lịch thành công!'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Đóng'),
-              ),
-            ],
-          );
-        },
+        'Đặt lịch thành công cho phòng ${widget.room.name} vào lúc $selectedTimeSlot trong $selectedDuration',
+        red,
       );
+
+      // Sau khi đặt lịch thành công, thêm thời gian đã đặt vào bookedTimes => người dùng không thể đặt lại lịch vào thời gian này nữa.
+      if (selectedTimeSlot != null) {
+        await _appPref.init();
+        setState(() {
+          DateTime startTime = parseTimeConvert(selectedTimeSlot!);
+          // Cộng thêm `selectedDuration` voà thời gian bắt đầu  _ thời gian booking họp:
+          int durationMinutes = int.parse(selectedDuration!.split(' ')[0]);
+          DateTime endTime = startTime.add(Duration(minutes: durationMinutes));
+          String formattedEndTime = formatTimeAMorPM(endTime);
+          widget.room.bookedTimes.add('$selectedTimeSlot - $formattedEndTime');
+        });
+        List<Room> listRoomChat = await _appPref.getListRoomMeetingManage();
+        int roomIndex =
+            listRoomChat.indexWhere((room) => room.name == widget.room.name);
+        if (roomIndex != -1) {
+          Room updatedRoom = Room(
+            name: widget.room.name,
+            description: widget.room.description,
+            status: widget.room.status,
+            openingHours: widget.room.openingHours,
+            closingHours: widget.room.closingHours,
+            isActive: widget.room.isActive,
+            bookedTimes: widget.room.bookedTimes,
+            departments: ["Phòng IT"],
+          );
+          listRoomChat[roomIndex] = updatedRoom;
+        }
+        List<Map<String, dynamic>> updatedRoomList =
+            listRoomChat.map((room) => room.toJson()).toList();
+        await _appPref.setListRoomMeetingManage(rooms: updatedRoomList);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Thông báo'),
+              content: const Text('Cuộc họp đã được đặt lịch thành công!'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Đóng'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        logWithColor("Không có khung giờ nào được chọn!", red);
+      }
     }
   }
 
