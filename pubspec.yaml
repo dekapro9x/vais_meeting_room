@@ -27,11 +27,13 @@ dependencies:
   json_annotation: ^4.9.0
   bmprogresshud: ^1.0.3
   after_layout: ^1.2.0
+  freezed_annotation: ^2.4.1
   flutter_localizations:
     sdk: flutter
   persistent_bottom_nav_bar: ^6.2.1
 
 dev_dependencies:
+  freezed: ^2.5.7
   flutter_launcher_icons: ^0.14.1
   build_runner: ^2.4.13
   json_serializable: ^6.8.0
