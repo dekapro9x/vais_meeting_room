@@ -9,5 +9,6 @@ class GlobalImages {
   static const String home = 'assets/svg/home-icon.svg';
   static const String bookingsSelected = 'assets/svg/booking-selected-icon.svg';
   static const String bookings = 'assets/svg/booking-icon.svg';
-
+  static const String mettingRoom = 'assets/svg/metting-room.svg';
+  static const String settingRoom = 'assets/svg/setting-room.svg';
 }

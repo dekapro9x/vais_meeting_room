@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
+import 'package:app_base_flutter/screens/vais_configure_room_availability/vais_config_room.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int? tabIndex;
@@ -74,6 +75,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   List<Widget> buildScreen() {
     return [
       const HomeScreen(),
+      const VaisConfigRoomAdmin(),
       const HomeScreen(),
     ];
   }
@@ -92,12 +94,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
       ),
       PersistentBottomNavBarItem(
         icon: SvgPicture.asset(
-          GlobalImages.bookingsSelected,
+          GlobalImages.settingRoom,
+        ),
+        title: 'Setting'.tr,
+        activeColorPrimary: GlobalColors.primaryColor,
+        inactiveIcon: SvgPicture.asset(
+          GlobalImages.settingRoom,
+        ),
+      ),
+      PersistentBottomNavBarItem(
+        icon: SvgPicture.asset(
+          GlobalImages.mettingRoom,
         ),
         title: 'Booking'.tr,
         activeColorPrimary: GlobalColors.primaryColor,
         inactiveIcon: SvgPicture.asset(
-          GlobalImages.bookings,
+          GlobalImages.mettingRoom,
         ),
       ),
     ];
