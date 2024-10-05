@@ -104,12 +104,14 @@ class _MyAppState extends State<MyApp>
 
   Future<void> saveRoomMeetingList() async {
     await _appPref.init();
-    final listRooomChat = await _appPref.getListRoomMeetingManage();
-    if (listRooomChat.isEmpty) {
+    final listRoomChat = await _appPref.getListRoomMeetingManage();
+    if (listRoomChat.isEmpty) {
       List<Room> roomsList = roomsMeetingManage
           .map((roomJson) => Room.fromJson(roomJson))
           .toList();
-      await _appPref.setListRoomMeetingManage(rooms: roomsList);
+      List<Map<String, dynamic>> roomsJsonList =
+          roomsList.map((room) => room.toJson()).toList();
+      await _appPref.setListRoomMeetingManage(rooms: roomsJsonList);
     }
   }
 

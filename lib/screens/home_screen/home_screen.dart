@@ -181,7 +181,8 @@ class HomeScreenState extends State<HomeScreen> {
           renderBuildMenuItem(
               "Danh sách phòng họp", Icons.meeting_room, Colors.green, 0),
           renderBuildMenuItem("Lịch họp của tôi", Icons.event, Colors.blue, 1),
-          renderBuildMenuItem("Cài Đặt", Icons.settings, Colors.red, 2),
+          renderBuildMenuItem(
+              "Quản lý phòng họp", Icons.settings, Colors.red, 2),
         ],
       ),
     );

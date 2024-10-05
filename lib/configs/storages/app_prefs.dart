@@ -11,10 +11,9 @@ class AppPrefStorage extends BasePrefsStorage {
   }
 
   //Lưu lại danh sách phòng họp được quản lý (Có thể thêm bớt, sửa xoá từ admin):
-  Future<void> setListRoomMeetingManage({required List<Room> rooms}) async {
-    List<Map<String, dynamic>> roomJsonList =
-        rooms.map((room) => room.toJson()).toList();
-    String jsonString = jsonEncode(roomJsonList);
+  Future<void> setListRoomMeetingManage(
+      {required List<Map<String, dynamic>> rooms}) async {
+    String jsonString = jsonEncode(rooms);
     await setValueForKey(GlobalConstants.listRoomMeetingManage, jsonString);
   }
 

@@ -100,7 +100,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         icon: SvgPicture.asset(
           GlobalImages.homeSelected,
         ),
-        title: 'Home'.tr,
+        title: 'Trang chủ'.tr,
         activeColorPrimary: GlobalColors.primaryColor,
         inactiveIcon: SvgPicture.asset(
           GlobalImages.home,
@@ -110,7 +110,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         icon: SvgPicture.asset(
           GlobalImages.settingRoom,
         ),
-        title: 'Setting'.tr,
+        title: 'Quản lý'.tr,
         activeColorPrimary: GlobalColors.primaryColor,
         inactiveIcon: SvgPicture.asset(
           GlobalImages.settingRoom,
@@ -120,7 +120,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         icon: SvgPicture.asset(
           GlobalImages.mettingRoom,
         ),
-        title: 'Booking'.tr,
+        title: 'Đặt phòng'.tr,
         activeColorPrimary: GlobalColors.primaryColor,
         inactiveIcon: SvgPicture.asset(
           GlobalImages.mettingRoom,
