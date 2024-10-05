@@ -7,4 +7,7 @@ class GlobalImages {
   //svg
   static const String homeSelected = 'assets/svg/home-selected-icon.svg';
   static const String home = 'assets/svg/home-icon.svg';
+  static const String bookingsSelected = 'assets/svg/booking-selected-icon.svg';
+  static const String bookings = 'assets/svg/booking-icon.svg';
+
 }
