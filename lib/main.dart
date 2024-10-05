@@ -11,8 +11,14 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:app_base_flutter/screens/splash_screen/splash_screen_logo_app.dart';
+import 'package:app_base_flutter/configs/get_it/get_it.dart';
 
-void main() {
+void main() async {
+  logWithColor('BeoTranDev...Run main()', green);
+  //Kiểm tra WidgetsFlutterBinding.ensureInitialized() đã thực hiện xong mới chạy tiếp logic (Không lỗi nếu chưa thực hiện xong)
+  WidgetsFlutterBinding.ensureInitialized();
+  //Đăng kí khởi tạo GetX và dependencies:
+  await configureDependencies();
   runApp(const MyApp());
 }
 
@@ -30,7 +36,6 @@ class _MyAppState extends State<MyApp>
 
   @override
   void initState() {
-    logWithColor('Vais meetig run.... main()', green);
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     if (WidgetsBinding.instance.lifecycleState != null) {
