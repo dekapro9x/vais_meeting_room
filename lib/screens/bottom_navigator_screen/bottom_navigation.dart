@@ -13,6 +13,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
 import 'package:app_base_flutter/screens/vais_configure_room_availability/vais_config_room.dart';
 import 'package:app_base_flutter/services/event_bus_services.dart';
+import 'package:app_base_flutter/screens/vais_list_room_manage/list_room_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int? tabIndex;
@@ -90,7 +91,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return [
       const HomeScreen(),
       const VaisConfigRoomAdmin(),
-      const HomeScreen(),
+      const ListRoomScreen(isBooking: true),
     ];
   }
 

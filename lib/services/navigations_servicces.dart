@@ -37,7 +37,8 @@ class NavigationService {
   }
 
 //Chuyển sang 1 màn hình mới và xoá màn hình hiện tại:
-  Future<void> navigateAndRemoveCurrentScreen(BuildContext context, Widget routeName,
+  Future<void> navigateAndRemoveCurrentScreen(
+      BuildContext context, Widget routeName,
       {Object? arguments}) {
     return Navigator.pushReplacement(
       context,
@@ -46,6 +47,11 @@ class NavigationService {
         settings: RouteSettings(arguments: arguments),
       ),
     );
+  }
+
+  //Xoá màn hình hiện tại nhưng không làm mất các màn hình đã đi qua:
+  Future<void> navigateBack(BuildContext context, {Object? result}) {
+    return Navigator.of(context).maybePop(result);
   }
 
 //Chuyển sang màn mới với bloc provider trong một contextProvider =>

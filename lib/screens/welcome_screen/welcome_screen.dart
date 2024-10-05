@@ -41,14 +41,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     SizeConfigResponsiveApp sizeConfigReponsive =
         SizeConfigResponsiveApp(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromRGBO(246, 227, 251, 1),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
               Expanded(
-                flex: 3, //3 màn flex = 1
+                flex: 3, 
                 child: PageView.builder(
                   controller: _pageController,
                   onPageChanged: (value) {

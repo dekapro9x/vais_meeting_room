@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:app_base_flutter/common/log_utils.dart';
 import 'package:app_base_flutter/configs/global_images.dart';
-import 'package:app_base_flutter/services/navigations_servicces.dart';
-import 'package:flutter/material.dart';
 import 'package:app_base_flutter/screens/vais_list_room_manage/list_room_screen.dart';
 import 'package:app_base_flutter/services/event_bus_services.dart';
+import 'package:app_base_flutter/services/navigations_servicces.dart';
+import 'package:flutter/material.dart';
+import 'package:app_base_flutter/screens/vais_my_booking_room/my_boooking.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -116,6 +117,7 @@ class HomeScreenState extends State<HomeScreen> {
                 context, const ListRoomScreen(isBooking: false));
             break;
           case 1:
+            navigationService.navigate(context, const MyBookingScreen());
             break;
           case 2:
             logWithColor("Ấn vào menu số 2: $title", red);
@@ -317,7 +319,7 @@ class HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 24),
                 renderBuildMenuTop(),
                 const SizedBox(height: 24),
-                renderBuildMenuBottom()
+                // renderBuildMenuBottom()
               ],
             ),
           ),

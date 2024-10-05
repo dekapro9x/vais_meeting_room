@@ -29,6 +29,25 @@ class AppPrefStorage extends BasePrefsStorage {
     }
   }
 
+  //Gán danh sách phòng họp đã được booking của tôi (Thêm vào danh sách phòng mới):
+  Future<void> setNewRoomMeetingBookingSuccess(
+      {required List<Map<String, dynamic>> rooms}) async {
+    String jsonString = jsonEncode(rooms);
+    await setValueForKey(GlobalConstants.listRoomBookingSuccess, jsonString);
+  }
+
+  //Lấy danh sách phòng họp đã được booking của tôi:
+  Future<List<Room>> getListRoomMeetingBookingSuccess() async {
+    String? jsonString =
+        await getValueForKey(GlobalConstants.listRoomBookingSuccess);
+    if (jsonString != null && jsonString.isNotEmpty) {
+      List<dynamic> jsonData = jsonDecode(jsonString);
+      return jsonData.map((json) => Room.fromJson(json)).toList();
+    } else {
+      return [];
+    }
+  }
+
   Future<void> saveActionsAcceptPolicyUseApp({required bool isAccept}) async {
     await setValueForKey(GlobalConstants.isAcceptPolicy, isAccept);
   }
