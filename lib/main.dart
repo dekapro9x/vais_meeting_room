@@ -42,7 +42,8 @@ class _MyAppState extends State<MyApp>
       "openingHours": "07:00 AM",
       "closingHours": "07:00 PM",
       "isActive": false,
-      "bookedTimes": []
+      "bookedTimes": [],
+      "departments": []
     },
     {
       "name": "Phòng Họp B",
@@ -51,7 +52,8 @@ class _MyAppState extends State<MyApp>
       "openingHours": "07:00 AM",
       "closingHours": "07:00 PM",
       "isActive": true,
-      "bookedTimes": ["10:00 AM - 11:00 AM"]
+      "bookedTimes": ["10:00 AM - 11:00 AM"],
+      "departments": ["Phòng Kế Toán"]
     },
     {
       "name": "Phòng Họp C",
@@ -60,7 +62,8 @@ class _MyAppState extends State<MyApp>
       "openingHours": "08:00 AM",
       "closingHours": "05:00 PM",
       "isActive": false,
-      "bookedTimes": ["01:00 PM - 02:00 PM", "03:00 PM - 04:00 PM"]
+      "bookedTimes": ["01:00 PM - 02:00 PM", "03:00 PM - 04:00 PM"],
+      "departments": ["Phòng Kế Toán", "Phòng R&D"]
     },
     {
       "name": "Phòng Họp D",
@@ -69,7 +72,8 @@ class _MyAppState extends State<MyApp>
       "openingHours": "10:00 AM",
       "closingHours": "04:00 PM",
       "isActive": false,
-      "bookedTimes": ["02:00 PM - 03:00 PM"]
+      "bookedTimes": ["02:00 PM - 03:00 PM"],
+      "departments": ["Phòng IT"]
     },
     {
       "name": "Phòng Họp E",
@@ -78,9 +82,11 @@ class _MyAppState extends State<MyApp>
       "openingHours": "08:30 AM",
       "closingHours": "06:30 PM",
       "isActive": false,
-      "bookedTimes": []
+      "bookedTimes": ["11:00 AM - 11:30 AM", "03:00 PM - 04:00 PM"],
+      "departments": ["Phòng nhân sự", "Phòng kinh doanh"]
     }
   ];
+
   @override
   Future<void> afterFirstLayout(BuildContext context) async {}
 
@@ -98,10 +104,13 @@ class _MyAppState extends State<MyApp>
 
   Future<void> saveRoomMeetingList() async {
     await _appPref.init();
-    List<Room> roomsList =
-        roomsMeetingManage.map((roomJson) => Room.fromJson(roomJson)).toList();
-    logWithColor('Danh sách room meeting: $roomsList', red);
-    await _appPref.setListRoomMeetingManage(rooms: roomsList);
+    final listRooomChat = await _appPref.getListRoomMeetingManage();
+    if (listRooomChat.isEmpty) {
+      List<Room> roomsList = roomsMeetingManage
+          .map((roomJson) => Room.fromJson(roomJson))
+          .toList();
+      await _appPref.setListRoomMeetingManage(rooms: roomsList);
+    }
   }
 
   bool alreadyAddedOverlays = false;

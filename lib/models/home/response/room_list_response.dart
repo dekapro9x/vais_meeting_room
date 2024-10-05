@@ -1,11 +1,12 @@
 class Room {
-  final String name;
-  final String description;
-  final String status;
-  final String openingHours;
-  final String closingHours;
-  final bool isActive;
-  final List<String> bookedTimes;
+  final String name; // Tên phòng họp
+  final String description; // Mô tả phòng họp
+  final String status; // Trạng thái phòng họp
+  final String openingHours; // Giờ mở cửa
+  final String closingHours; // Giờ đóng cửa
+  final bool isActive; // Trạng thái hoạt động của phòng họp
+  final List<String> bookedTimes; // Thời gian đã đặt của phòng họp
+  final List<String> departments; // Danh sách phòng ban đặt lịch
 
   Room({
     required this.name,
@@ -15,6 +16,7 @@ class Room {
     required this.closingHours,
     required this.isActive,
     required this.bookedTimes,
+    required this.departments,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Room {
       closingHours: json['closingHours'] as String,
       isActive: json['isActive'] as bool,
       bookedTimes: List<String>.from(json['bookedTimes'] ?? []),
+      departments: List<String>.from(json['departments'] ?? []),
     );
   }
 
@@ -38,6 +41,7 @@ class Room {
       'closingHours': closingHours,
       'isActive': isActive,
       'bookedTimes': bookedTimes,
+      'departments': departments,
     };
   }
 }

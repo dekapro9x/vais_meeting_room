@@ -237,6 +237,48 @@ class _ListRoomScreenState extends State<ListRoomScreen> {
                   }).toList(),
                 ],
               ),
+            //Thông tin phòng ban đặt lịch:
+            if (room.departments.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Phòng ban đặt lịch:',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  ...room.departments.map((department) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons
+                                .group, 
+                            color: Colors.deepPurple,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              department,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ],
+              )
           ],
         ),
       ),
