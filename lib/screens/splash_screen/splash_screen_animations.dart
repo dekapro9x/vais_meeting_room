@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:flutter/material.dart';
+
 import 'package:app_base_flutter/common/dimensions.dart';
-import 'package:app_base_flutter/configs/global_colors.dart';
 import 'package:app_base_flutter/configs/global_images.dart';
 import 'package:app_base_flutter/configs/global_size_responsive_configs.dart';
 import 'package:app_base_flutter/routers/route_generator.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'staggered_raindrop_animation.dart';
 
 class SplashScreenAppAnimations extends StatefulWidget {
@@ -82,14 +83,14 @@ class _SplashScreenState extends State<SplashScreenAppAnimations>
               top: 0,
               left: 0,
               blurSigma: 100.0,
-              color: const Color(0xFF00AFFF).withOpacity(0.72),
+              color: const Color.fromRGBO(198, 84, 232, 1).withOpacity(0.72),
               radius:
                   const BorderRadius.only(bottomRight: Radius.circular(120))),
           _buildBackgroundCircle(
               bottom: 0,
               right: 0,
               blurSigma: 100.0,
-              color: GlobalColors.primaryColor.withOpacity(0.3),
+              color: const Color.fromRGBO(211, 167, 221, 1).withOpacity(0.3),
               radius: const BorderRadius.only(topLeft: Radius.circular(120))),
           Positioned(
             bottom: _animation.dropPosition.value * _size.height,

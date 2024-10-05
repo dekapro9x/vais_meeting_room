@@ -5,6 +5,7 @@ import 'package:app_base_flutter/configs/global_images.dart';
 import 'package:app_base_flutter/services/navigations_servicces.dart';
 import 'package:flutter/material.dart';
 import 'package:app_base_flutter/screens/vais_list_room_manage/list_room_screen.dart';
+import 'package:app_base_flutter/services/event_bus_services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -116,6 +117,13 @@ class HomeScreenState extends State<HomeScreen> {
           case 1:
             break;
           case 2:
+            logWithColor("Ấn vào menu số 2: $title", red);
+            String eventMessageBusEmitActiveBottomMenuIndex2 =
+                'ACTIVE_BOTTOM_MENU_INDEX_2';
+            EventBusServices.fireEventEmit(
+                MyCustomEvent(eventMessageBusEmitActiveBottomMenuIndex2));
+            break;
+          case 3:
             break;
           default:
             break;

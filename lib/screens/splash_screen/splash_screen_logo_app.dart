@@ -1,4 +1,3 @@
-import 'package:app_base_flutter/configs/global_colors.dart';
 import 'package:app_base_flutter/configs/global_images.dart';
 import 'package:app_base_flutter/configs/global_size_responsive_configs.dart';
 import 'package:app_base_flutter/screens/splash_screen/splash_screen_animations.dart';
@@ -82,7 +81,7 @@ class _SplashScreenLogoAppState extends State<SplashScreenLogoApp>
           CustomPaint(
             size: Size.infinite,
             painter: HolePainter(
-              color: const Color.fromARGB(255, 93, 230, 19),
+              color: const Color.fromRGBO(145, 23, 183, 1),
               holeSize: _animation.holeSize.value * _size.width,
             ),
           ),

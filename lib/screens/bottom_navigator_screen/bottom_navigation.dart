@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
 import 'package:app_base_flutter/screens/vais_configure_room_availability/vais_config_room.dart';
+import 'package:app_base_flutter/services/event_bus_services.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int? tabIndex;
@@ -47,6 +48,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
+    listenEventBusEmitChangeTabIndex();
     controller = PersistentTabController(initialIndex: widget.tabIndex ?? 0);
     controller.addListener(onChangeMenuTabBottomIndex);
   }
@@ -54,6 +56,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  //Lắng nghe sự kiện ấn vào avatar thì active bottom tab sang tab 4:
+  Future<void> listenEventBusEmitChangeTabIndex() async {
+    EventBusServices.listenOnEvent((MyCustomEvent event) {
+      if (event.message == 'ACTIVE_BOTTOM_MENU_INDEX_2') {
+        setState(() {
+          controller.jumpToTab(1);
+        });
+      }
+    });
+    return Future.value();
   }
 
   Future<void> onChangeMenuTabBottomIndex() async {
