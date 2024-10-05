@@ -7,8 +7,21 @@ import 'package:app_base_flutter/services/event_bus_services.dart';
 import 'package:app_base_flutter/services/navigations_servicces.dart';
 import 'package:flutter/material.dart';
 import 'package:app_base_flutter/screens/vais_my_booking_room/my_boooking.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
+  static MultiBlocProvider providers() {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeCubit>(
+          create: (BuildContext context) => HomeCubit(),
+        ),
+      ],
+      child: const HomeScreen(),
+    );
+  }
+
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -31,8 +44,11 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     pageController = PageController(initialPage: _currentPage);
+    //Lấy số lượng badger trong state cubit home:
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startAutoScrollAnimations();
+      final badgeCount = context.read<HomeCubit>().state.data.badgeMyBooking;
+      logWithColor('Số lượng badge my booking: $badgeCount', red);
     });
   }
 
@@ -107,7 +123,10 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget renderBuildMenuItem(
-      String title, IconData icon, Color color, int index) {
+      String title, IconData icon, Color color, int index, int badgeCount) {
+    logWithColor(
+        'Số lượng badge my booking đã cập nhật vào cubitState: $badgeCount',
+        red);
     return GestureDetector(
       onTap: () {
         logWithColor("Item menu: $title", red);
@@ -148,25 +167,56 @@ class HomeScreenState extends State<HomeScreen> {
             color: color,
             borderRadius: BorderRadius.circular(16.0),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              Icon(
-                icon,
-                size: 40,
-                color: Colors.white,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              if (badgeCount > 0)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(4.0),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 35,
+                      minHeight: 35,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '$badgeCount',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
             ],
           ),
         ),
@@ -175,16 +225,22 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget renderBuildMenuTop() {
+    final badgeCountBookingSuccess =
+        context.read<HomeCubit>().state.data.badgeMyBooking;
+    logWithColor(
+        'Số lượng badge my booking đã cập nhật vào cubitState: $badgeCountBookingSuccess',
+        red);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           renderBuildMenuItem(
-              "Danh sách phòng họp", Icons.meeting_room, Colors.green, 0),
-          renderBuildMenuItem("Lịch họp của tôi", Icons.event, Colors.blue, 1),
+              "Danh sách phòng họp", Icons.meeting_room, Colors.green, 0, 0),
+          renderBuildMenuItem("Lịch họp của tôi", Icons.event, Colors.blue, 1,
+              badgeCountBookingSuccess),
           renderBuildMenuItem(
-              "Quản lý phòng họp", Icons.settings, Colors.red, 2),
+              "Quản lý phòng họp", Icons.settings, Colors.red, 2, 0),
         ],
       ),
     );

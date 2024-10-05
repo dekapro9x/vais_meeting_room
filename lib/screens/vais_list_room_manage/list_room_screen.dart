@@ -4,30 +4,61 @@ import 'package:app_base_flutter/models/home/response/room_list_response.dart';
 import 'package:app_base_flutter/screens/vais_booking_detail/vais_room_meeting_booking_detail.dart';
 import 'package:app_base_flutter/services/navigations_servicces.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class ListRoomScreen extends StatefulWidget {
   final bool isBooking;
   const ListRoomScreen({Key? key, required this.isBooking}) : super(key: key);
+
   @override
   _ListRoomScreenState createState() => _ListRoomScreenState();
 }
 
-class _ListRoomScreenState extends State<ListRoomScreen> {
+class _ListRoomScreenState extends State<ListRoomScreen>
+    with RouteAware, WidgetsBindingObserver {
   final AppPrefStorage _appPref = AppPrefStorage();
   List<Room> roomMeetingState = [];
   final NavigationService navigationService = NavigationService();
+  final RouteObserver<ModalRoute<void>> routeObserver =
+      RouteObserver<ModalRoute<void>>();
 
   @override
   void initState() {
-    getListRoomMeetingManage();
     super.initState();
+    getListRoomMeetingManage();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    getListRoomMeetingManage();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      getListRoomMeetingManage();
+    }
   }
 
   //Lấy danh sách phòng họp được quản lý:
   Future<void> getListRoomMeetingManage() async {
+    logWithColor('Lấy danh sách phòng họp được quản lý', yellow);
     await _appPref.init();
     final listRooomChat = await _appPref.getListRoomMeetingManage();
-    logWithColor('Danh sách room chat: $listRooomChat', green);
     setState(() {
       roomMeetingState = listRooomChat;
     });

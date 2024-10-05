@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeStateData {
   StatusType get status => throw _privateConstructorUsedError;
+  int get badgeMyBooking => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeStateData
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +32,7 @@ abstract class $HomeStateDataCopyWith<$Res> {
           HomeStateData value, $Res Function(HomeStateData) then) =
       _$HomeStateDataCopyWithImpl<$Res, HomeStateData>;
   @useResult
-  $Res call({StatusType status});
+  $Res call({StatusType status, int badgeMyBooking});
 }
 
 /// @nodoc
@@ -49,13 +50,18 @@ class _$HomeStateDataCopyWithImpl<$Res, $Val extends HomeStateData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
+    Object? status = null,
+    Object? badgeMyBooking = null,
   }) {
     return _then(_value.copyWith(
-      status: freezed == status
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as StatusType,
+      badgeMyBooking: null == badgeMyBooking
+          ? _value.badgeMyBooking
+          : badgeMyBooking // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -68,7 +74,7 @@ abstract class _$$HomeStateDataImplCopyWith<$Res>
       __$$HomeStateDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({StatusType status});
+  $Res call({StatusType status, int badgeMyBooking});
 }
 
 /// @nodoc
@@ -84,13 +90,18 @@ class __$$HomeStateDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
+    Object? status = null,
+    Object? badgeMyBooking = null,
   }) {
     return _then(_$HomeStateDataImpl(
-      status: freezed == status
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as StatusType,
+      badgeMyBooking: null == badgeMyBooking
+          ? _value.badgeMyBooking
+          : badgeMyBooking // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -98,15 +109,19 @@ class __$$HomeStateDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateDataImpl implements _HomeStateData {
-  const _$HomeStateDataImpl({this.status = StatusType.init});
+  const _$HomeStateDataImpl(
+      {this.status = StatusType.init, this.badgeMyBooking = 0});
 
   @override
   @JsonKey()
   final StatusType status;
+  @override
+  @JsonKey()
+  final int badgeMyBooking;
 
   @override
   String toString() {
-    return 'HomeStateData(status: $status)';
+    return 'HomeStateData(status: $status, badgeMyBooking: $badgeMyBooking)';
   }
 
   @override
@@ -114,12 +129,13 @@ class _$HomeStateDataImpl implements _HomeStateData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateDataImpl &&
-            const DeepCollectionEquality().equals(other.status, status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.badgeMyBooking, badgeMyBooking) ||
+                other.badgeMyBooking == badgeMyBooking));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(status));
+  int get hashCode => Object.hash(runtimeType, status, badgeMyBooking);
 
   /// Create a copy of HomeStateData
   /// with the given fields replaced by the non-null parameter values.
@@ -131,10 +147,14 @@ class _$HomeStateDataImpl implements _HomeStateData {
 }
 
 abstract class _HomeStateData implements HomeStateData {
-  const factory _HomeStateData({final StatusType status}) = _$HomeStateDataImpl;
+  const factory _HomeStateData(
+      {final StatusType status,
+      final int badgeMyBooking}) = _$HomeStateDataImpl;
 
   @override
   StatusType get status;
+  @override
+  int get badgeMyBooking;
 
   /// Create a copy of HomeStateData
   /// with the given fields replaced by the non-null parameter values.

@@ -3,21 +3,55 @@ import 'package:app_base_flutter/screens/vais_booking_room_handle/handle_booking
 import 'package:app_base_flutter/services/navigations_servicces.dart';
 import 'package:flutter/material.dart';
 
-class RoomMeetingBookingDetailScreen extends StatelessWidget {
+class RoomMeetingBookingDetailScreen extends StatefulWidget {
   final Room room;
 
   const RoomMeetingBookingDetailScreen({Key? key, required this.room})
       : super(key: key);
 
   @override
+  _RoomMeetingBookingDetailScreenState createState() =>
+      _RoomMeetingBookingDetailScreenState();
+}
+
+class _RoomMeetingBookingDetailScreenState
+    extends State<RoomMeetingBookingDetailScreen> {
+  final NavigationService navigationService = NavigationService();
+  Room roomDetail = Room(
+    name: "",
+    description: "",
+    status: "",
+    openingHours: "",
+    closingHours: "",
+    isActive: false,
+    bookedTimes: [],
+    departments: [],
+  );
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      roomDetail = widget.room;
+    });
+  }
+
+  void funcCreateBookingRoomSuccess(Room newRoom) {
+    if (newRoom != null) {
+      setState(() {
+        roomDetail = newRoom;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    bool isAvailable = room.status == "available";
-    bool isActive = room.isActive;
-    final NavigationService navigationService = NavigationService();
+    bool isAvailable = roomDetail.status == "available";
+    bool isActive = roomDetail.isActive;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(room.name, style: const TextStyle(color: Colors.white)),
+        title:
+            Text(roomDetail.name, style: const TextStyle(color: Colors.white)),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -64,7 +98,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                room.name,
+                                roomDetail.name,
                                 style: const TextStyle(
                                   fontSize: 24.0,
                                   fontWeight: FontWeight.bold,
@@ -73,7 +107,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                room.description,
+                                roomDetail.description,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.black54,
@@ -102,7 +136,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Giờ mở cửa: ${room.openingHours}',
+                            'Giờ mở cửa: ${roomDetail.openingHours}',
                             style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black54,
@@ -122,7 +156,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Giờ đóng cửa: ${room.closingHours}',
+                            'Giờ đóng cửa: ${roomDetail.closingHours}',
                             style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black54,
@@ -152,7 +186,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    if (room.bookedTimes.isNotEmpty)
+                    if (roomDetail.bookedTimes.isNotEmpty)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -166,7 +200,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          ...room.bookedTimes.map((time) {
+                          ...roomDetail.bookedTimes.map((time) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Row(
@@ -192,7 +226,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                           }).toList(),
                         ],
                       ),
-                    if (room.departments.isNotEmpty)
+                    if (roomDetail.departments.isNotEmpty)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -206,7 +240,7 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          ...room.departments.map((department) {
+                          ...roomDetail.departments.map((department) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Row(
@@ -242,9 +276,14 @@ class RoomMeetingBookingDetailScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    Room roomDetail = room;
+                    Room roomDetailNavi = roomDetail;
                     navigationService.navigate(
-                        context, HandleBookingRoomScreen(room: roomDetail));
+                      context,
+                      HandleBookingRoomScreen(
+                        room: roomDetail,
+                        funcCreateBookingRoom: funcCreateBookingRoomSuccess,
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.add),
                   label: const Text('Đặt Lịch'),

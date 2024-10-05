@@ -146,7 +146,7 @@ class VaisConfigRoomAdminState extends State<VaisConfigRoomAdmin> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Cấu hình phòng họp mới',
+                    'Thêm phòng họp mới',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -291,7 +291,7 @@ class VaisConfigRoomAdminState extends State<VaisConfigRoomAdmin> {
                 onPressSaveConfiguration(context);
               },
               icon: const Icon(Icons.save),
-              label: const Text('Lưu cấu hình phòng họp mới'),
+              label: const Text('Tạo phòng họp mới'),
               style: ElevatedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
@@ -307,7 +307,7 @@ class VaisConfigRoomAdminState extends State<VaisConfigRoomAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cấu Hình Phòng Họp'),
+        title: const Text('Thêm Phòng Họp'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

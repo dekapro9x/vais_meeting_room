@@ -14,6 +14,7 @@ import 'package:app_base_flutter/screens/home_screen/cubit/home_cubit.dart';
 import 'package:app_base_flutter/screens/vais_configure_room_availability/vais_config_room.dart';
 import 'package:app_base_flutter/services/event_bus_services.dart';
 import 'package:app_base_flutter/screens/vais_list_room_manage/list_room_screen.dart';
+import 'package:app_base_flutter/configs/storages/app_prefs.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int? tabIndex;
@@ -45,10 +46,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int unreadCount = 0;
   int indexTabBottomActive = 0;
   bool isVisibleNavigationMenuBar = true;
+  final AppPrefStorage _appPref = AppPrefStorage();
 
   @override
   void initState() {
     super.initState();
+    _appPref.init();
     listenEventBusEmitChangeTabIndex();
     controller = PersistentTabController(initialIndex: widget.tabIndex ?? 0);
     controller.addListener(onChangeMenuTabBottomIndex);
@@ -72,6 +75,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   }
 
   Future<void> onChangeMenuTabBottomIndex() async {
+    logWithColor("Bottom tab index: ${controller.index}", red);
     switch (controller.index) {
       case 1:
         break;
@@ -89,7 +93,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   //Danh sách màn hình active theo Bottom tab:
   List<Widget> buildScreen() {
     return [
-      const HomeScreen(),
+      HomeScreen(),
       const VaisConfigRoomAdmin(),
       const ListRoomScreen(isBooking: true),
     ];
@@ -130,6 +134,26 @@ class _BottomNavigationState extends State<BottomNavigation> {
     ];
   }
 
+  void onChangeBottomTabIndex(BuildContext context) async {
+    switch (indexTabBottomActive) {
+      case 0:
+        _appPref.init();
+        final getListRoomBoooking =
+            await _appPref.getListRoomMeetingBookingSuccess();
+        logWithColor(
+            "Gắn số lượng badger: ${getListRoomBoooking.length}", green);
+        context
+            .read<HomeCubit>()
+            .setDataNumberBadgerMyBookingRoom(getListRoomBoooking.length);
+        break;
+      case 1:
+        break;
+      case 2:
+        break;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool shouldHideBottomNav = true;
@@ -146,6 +170,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         screens: buildScreen(),
         items: buildCustomListItemBottomTab(),
         onItemSelected: (int indexBottomTabSelect) => {
+          onChangeBottomTabIndex(context),
           logWithColor("Item bottom tab select: $indexBottomTabSelect", red)
         },
         backgroundColor: Colors.white,

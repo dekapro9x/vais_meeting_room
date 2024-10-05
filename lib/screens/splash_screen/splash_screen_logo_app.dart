@@ -87,8 +87,8 @@ class _SplashScreenLogoAppState extends State<SplashScreenLogoApp>
           ),
           Center(
             child: Container(
-              width: sizeConfigResponsive.getWidthReposive(300),
-              height: sizeConfigResponsive.getWidthReposive(300),
+              width: sizeConfigResponsive.getWidthReposive(320),
+              height: sizeConfigResponsive.getWidthReposive(320),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(

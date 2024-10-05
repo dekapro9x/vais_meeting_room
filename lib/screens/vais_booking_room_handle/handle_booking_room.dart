@@ -7,8 +7,12 @@ import 'package:app_base_flutter/screens/vais_booking_detail/vais_room_meeting_b
 
 class HandleBookingRoomScreen extends StatefulWidget {
   final Room room;
-  const HandleBookingRoomScreen({Key? key, required this.room})
-      : super(key: key);
+  final Function(Room newRoom) funcCreateBookingRoom;
+  const HandleBookingRoomScreen({
+    Key? key,
+    required this.room,
+    required this.funcCreateBookingRoom,
+  }) : super(key: key);
 
   @override
   _HandleBookingRoomScreenState createState() =>
@@ -192,6 +196,7 @@ class _HandleBookingRoomScreenState extends State<HandleBookingRoomScreen> {
             ],
           );
           listRoomChat[roomIndex] = updatedRoom;
+          widget.funcCreateBookingRoom(updatedRoom);
           // ********************************Xử lý danh sách đặt lịch của tôi****************************************
           //Lấy danh sách các phòng họp đã đặt lịch của tôi => Lấy danh sách đặt phòng đã thành công:
           // final getListMyBooking =
@@ -222,7 +227,7 @@ class _HandleBookingRoomScreenState extends State<HandleBookingRoomScreen> {
               openingHours: widget.room.openingHours,
               closingHours: widget.room.closingHours,
               isActive: widget.room.isActive,
-              bookedTimes: ['$selectedTimeSlot - $formattedEndTime'], 
+              bookedTimes: ['$selectedTimeSlot - $formattedEndTime'],
               departments: ['Tôi đã đặt'],
             );
             myBookingList.add(newBookingRoom);
